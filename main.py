@@ -12,7 +12,7 @@ import sys
 path = "{}.csv"
 
 def createSubmission(prediction):
-    submission = pd.read_csv(path.format(samples))
+    submission = pd.read_csv(path.format("sample"))
     submission['target'] = prediction
     submission.to_csv('submission.csv', index=False)
 
@@ -31,8 +31,8 @@ def main():
     pandasOutputInit()
 
     # data import
-    train_data = pd.read_csv(path.format(train))
-    test_data = pd.read_csv(path.format(test))
+    train_data = pd.read_csv(path.format("train"))
+    test_data = pd.read_csv(path.format("test"))
     train_data_features = train_data.drop('target', axis=1)
     train_data_target = train_data['target']
 
