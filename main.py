@@ -12,8 +12,7 @@ RELEASE = False
 # RELEASE = True
 if RELEASE:
     # for kaggle testing
-    # path = "/kaggle/input/heart-desease/{}.csv"
-    pass
+    path = "/kaggle/input/heart-desease/{}.csv"
 else:
     # for testing in your PC
     path = "{}.csv"
