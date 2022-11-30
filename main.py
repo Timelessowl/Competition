@@ -3,13 +3,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import recall_score
-from sklearn.svm import SVC
+from sklearn.model_selection import GridSearchCV
+from sklearn.neighbors import KNeighborsClassifier
 import sys
 
-# for kaggle testing
-# path = "/kaggle/input/heart-desease/{}.csv"
-# for testing in your PC
-path = "{}.csv"
+
+RELEASE = False
+# RELEASE = True
+if RELEASE:
+    # for kaggle testing
+    # path = "/kaggle/input/heart-desease/{}.csv"
+    pass
+else:
+    # for testing in your PC
+    path = "{}.csv"
+
 
 def createSubmission(prediction):
     submission = pd.read_csv(path.format("sample"))
@@ -26,29 +34,32 @@ def pandasOutputInit():
 
 
 def main():
-    # output config
-    # sys.stdout = open('result', 'w')
-    pandasOutputInit()
+    if not RELEASE:
+        # output config
+        sys.stdout = open('result', 'w')
+        pandasOutputInit()
 
     # data import
     train_data = pd.read_csv(path.format("train"))
     test_data = pd.read_csv(path.format("test"))
-    train_data_features = train_data.drop('target', axis=1)
-    train_data_target = train_data['target']
+    train_data_features, train_data_target = train_data.drop('target', axis=1), train_data['target']
 
-    # print(sample_data)
-    # print(test_data)
-    # print(train_data)
+    if not RELEASE:
+        print(test_data)
+        print(train_data)
 
     # model creation & training
-    model = SVC()
+    model = KNeighborsClassifier(n_neighbors=choose_by_your_own, weights='uniform', p=2)
     model.fit(train_data_features, train_data_target)
+
 
     # model result evaluation
     train_prediction = model.predict(train_data_features)
     print(recall_score(train_prediction, train_data_target))
     test_prediction = model.predict(test_data)
-    createSubmission(test_prediction)
+    if RELEASE:
+        createSubmission(test_prediction)
+
 
 if __name__ == '__main__':
     main()
